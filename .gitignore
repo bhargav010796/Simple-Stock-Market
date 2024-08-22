@@ -30,4 +30,5 @@ bin/
 
 .idea/
 stock-market.iml
+/target
 

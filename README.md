@@ -119,15 +119,18 @@ Enter the stock name: POP
 Enter the current price: 120.0
 
 POP Calculations:
+___
 
 Dividend Yield:                 0.0667
 
 P/E Ratio:                      15.0
 
 Volume Weighted Stock Price:    117.5
+___
 
 Overall GBCE All Share Index:
 
 GBCE All Share Index:           103.4
+___
 
 This example illustrates how the application prompts for input and displays the resulting calculations, providing users with a clear understanding of what to expect when they run the application.

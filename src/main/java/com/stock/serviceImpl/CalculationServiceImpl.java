@@ -1,12 +1,10 @@
 package com.stock.serviceImpl;
 
-import com.stock.enums.StockName;
 import com.stock.enums.StockType;
 import com.stock.models.Stock;
 import com.stock.models.Trade;
 import com.stock.service.ICalculationService;
 import com.stock.service.ITradeService;
-import com.stock.serviceImpl.TradeServiceImpl;
 
 import java.util.Date;
 import java.util.List;

@@ -15,6 +15,8 @@ public class Main {
             System.out.println("- " + stockName);
         }
 
+        System.out.println("---------------------------------");
+
         // Ask for user input
         Scanner scanner = new Scanner(System.in);
 
@@ -60,7 +62,6 @@ public class Main {
         double gbceAllShareIndex = stockMarketController.calculateGBCEAllShareIndex();
         System.out.println("GBCE All Share Index: " + gbceAllShareIndex);
         System.out.println("---------------------------------");
-
-
     }
+
 }

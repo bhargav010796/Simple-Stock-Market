@@ -3,7 +3,6 @@ package com.stock.models;
 import com.stock.enums.StockName;
 import com.stock.enums.TradeType;
 import org.junit.jupiter.api.Test;
-import com.stock.models.Trade;
 
 import java.util.Date;
 

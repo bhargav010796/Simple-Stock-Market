@@ -5,9 +5,7 @@ import com.stock.models.Trade;
 import com.stock.service.ITradeService;
 import com.stock.repository.TradeRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TradeServiceImpl implements ITradeService {
     private final TradeRepository tradeRepository;

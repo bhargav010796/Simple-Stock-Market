@@ -17,4 +17,5 @@ public class StockFactory {
 
         return List.of(stock1, stock2, stock3, stock4, stock5);
     }
+
 }

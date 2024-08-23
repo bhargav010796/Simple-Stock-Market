@@ -3,7 +3,6 @@ package com.stock.models;
 import com.stock.enums.StockName;
 import com.stock.enums.StockType;
 import org.junit.jupiter.api.Test;
-import com.stock.models.Stock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

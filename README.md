@@ -114,6 +114,8 @@ Available stocks:
 - GIN
 - JOE
 
+___
+
 Enter the stock name: POP
 
 Enter the current price: 120.0

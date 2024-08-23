@@ -6,14 +6,12 @@ import com.stock.models.Stock;
 import com.stock.models.Trade;
 import com.stock.service.IStockService;
 import com.stock.service.ITradeService;
-import com.stock.serviceImpl.CalculationServiceImpl;
 import com.stock.serviceImpl.StockServiceImpl;
 import com.stock.serviceImpl.TradeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

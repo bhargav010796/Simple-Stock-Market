@@ -2,8 +2,6 @@ package com.stock.repository;
 
 import com.stock.enums.StockName;
 import com.stock.models.Stock;
-import com.stock.models.Trade;
-import com.stock.util.StockFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

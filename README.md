@@ -100,6 +100,7 @@ After entering the stock name and price, the application will display the follow
 	•	P/E Ratio
 	•	Volume Weighted Stock Price (VWSP)
 Additionally, the application will calculate and display the GBCE All Share Index based on all stocks.
+
 Example Interaction:
 
 Available stocks:

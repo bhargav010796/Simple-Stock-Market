@@ -27,6 +27,9 @@ The project is organized as follows:
         - **models**
           - `Stock.java`
           - `Trade.java`
+        - **repository**
+          - `StockRepository.java`
+          - `TradeRepository.java`
         - **service**
           - `ICalculationService.java`
           - `ITradeService.java`
@@ -37,17 +40,20 @@ The project is organized as follows:
           - `StockFactory.java`
           - `TradeFactory.java`
         - **Main.java**    # Main entry point of the application
-  - **test**
-    - **java**
-      - **com.stock**
-        - **controller**
-          - `StockMarketControllerTest.java`
-        - **models**
-          - `StockTest.java`
-          - `TradeTest.java`
-        - **serviceImpl**
-          - `CalculationServiceImplTest.java`
-          - `TradeServiceImplTest.java`
+- **test**
+  - **java**
+    - **com.stock**
+      - **controller**
+        - `StockMarketControllerTest.java`
+      - **models**
+        - `StockTest.java`
+        - `TradeTest.java`
+      - **repository**
+        - `StockRepositoryTest.java`
+        - `TradeRepositoryTest.java`
+      - **serviceImpl**
+        - `CalculationServiceImplTest.java`
+        - `TradeServiceImplTest.java`
 
 ## Prerequisites
 
@@ -59,7 +65,7 @@ The project is organized as follows:
 ### Clone the Repository
 
 ```shell
-git clone <repository-url>
+git clone https://github.com/bhargav010796/Simple-Stock-Market.git
 cd simple-stock-market
 ```
 
@@ -120,11 +126,3 @@ Overall GBCE All Share Index:
 GBCE All Share Index:           103.4
 
 This example illustrates how the application prompts for input and displays the resulting calculations, providing users with a clear understanding of what to expect when they run the application.
-
-Summary:
-
-	•	Run the Application: Instructions on how to start the application using Maven.
-	•	User Interaction: Detailed steps on how the user interacts with the application by entering a stock name and price.
-	•	Example Interaction: A sample output showing what the user will see in the terminal, including the calculations for the selected stock and the GBCE All Share Index.
-
-This section will guide users through running the application and understanding the results they will see after entering the required information.

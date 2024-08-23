@@ -9,4 +9,5 @@ public interface ITradeService {
     void recordTrade(Trade trade);
     List<Trade> getTradesByStockName(StockName stockName);
     List<Trade> getAllTrades();
+    void clearAllTrades();
 }

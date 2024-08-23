@@ -9,4 +9,5 @@ public interface IStockService {
     void saveStock(Stock stock);
     Stock getStockByName(StockName stockName);
     List<Stock> getAllStocks();
+    void clearAllStocks();
 }

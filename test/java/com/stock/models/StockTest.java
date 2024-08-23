@@ -1,4 +1,4 @@
-package test.models;
+package com.stock.models;
 
 import com.stock.enums.StockName;
 import com.stock.enums.StockType;

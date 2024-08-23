@@ -39,4 +39,8 @@ public class TradeRepository {
         return allTrades;
     }
 
+    public void clearAllTrades() {
+        tradeStorage.clear();
+    }
+
 }

@@ -31,4 +31,9 @@ public class TradeServiceImpl implements ITradeService {
         return tradeRepository.findAllTrades();
     }
 
+    @Override
+    public void clearAllTrades() {
+        tradeRepository.clearAllTrades();
+    }
+
 }

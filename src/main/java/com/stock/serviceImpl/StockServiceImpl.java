@@ -29,4 +29,9 @@ public class StockServiceImpl implements IStockService {
         return stockRepository.findAllStocks();
     }
 
+    @Override
+    public void clearAllStocks() {
+        stockRepository.clearAllStocks();
+    }
+
 }

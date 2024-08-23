@@ -35,4 +35,8 @@ public class StockRepository {
         return new ArrayList<>(stockStorage.values());
     }
 
+    public void clearAllStocks() {
+        stockStorage.clear();
+    }
+
 }

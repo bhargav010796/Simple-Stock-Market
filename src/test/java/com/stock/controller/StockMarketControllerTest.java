@@ -20,113 +20,95 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StockMarketControllerTest {
 
     private StockMarketController stockMarketController;
+    private IStockService stockService;
+    private ITradeService tradeService;
+    private CalculationServiceImpl calculationService;
 
     @BeforeEach
     void setUp() {
+        stockService = mock(StockServiceImpl.class);
+        tradeService = mock(TradeServiceImpl.class);
+        calculationService = mock(CalculationServiceImpl.class);
+
         stockMarketController = new StockMarketController();
     }
 
     @Test
-    void testAddAndGetStock() {
-        Stock stock = Stock.builder().stockName(StockName.TEA).stockType(StockType.COMMON).lastDividend(0).fixedDividend(0).parValue(100).build();
-        stockMarketController.addStock(Arrays.asList(stock));
-
-        Stock retrievedStock = stockMarketController.getStock(StockName.TEA);
-        assertNotNull(retrievedStock);
-        assertEquals(stock, retrievedStock);
+    void testAddStock() {
+        Stock stock = new Stock(StockName.TEA, StockType.COMMON, 0, 0, 100);
+        stockMarketController.addStock(stock);
+        verify(stockService, times(1)).saveStock(stock);
     }
 
     @Test
-    void testAddMultipleStocks() {
-        Stock stock1 = Stock.builder().stockName(StockName.TEA).stockType(StockType.COMMON).lastDividend(0).fixedDividend(0).parValue(100).build();
-        Stock stock2 = Stock.builder().stockName(StockName.POP).stockType(StockType.COMMON).lastDividend(8).fixedDividend(0).parValue(100).build();
-
-        stockMarketController.addStock(Arrays.asList(stock1, stock2));
-
-        Stock retrievedStock1 = stockMarketController.getStock(StockName.TEA);
-        Stock retrievedStock2 = stockMarketController.getStock(StockName.POP);
-
-        assertNotNull(retrievedStock1);
-        assertEquals(stock1, retrievedStock1);
-
-        assertNotNull(retrievedStock2);
-        assertEquals(stock2, retrievedStock2);
+    void testRecordTrade() {
+        Trade trade = new Trade(StockName.TEA, new Date(), 100, 105.0);
+        stockMarketController.recordTrade(trade);
+        verify(tradeService, times(1)).recordTrade(trade);
     }
 
     @Test
-    void testRecordTrades() {
-        Stock stock = Stock.builder().stockName(StockName.TEA).stockType(StockType.COMMON).lastDividend(0).fixedDividend(0).parValue(100).build();
-        stockMarketController.addStock(Arrays.asList(stock));
+    void testGetStock() {
+        Stock stock = new Stock(StockName.TEA, StockType.COMMON, 0, 0, 100);
+        when(stockService.getStockByName(StockName.TEA)).thenReturn(stock);
 
-        Trade trade1 = Trade.builder().stockName(StockName.TEA).timestamp(new Date()).quantity(100).tradeType(TradeType.BUY).price(105.0).build();
-        Trade trade2 = Trade.builder().stockName(StockName.TEA).timestamp(new Date()).quantity(200).tradeType(TradeType.SELL).price(106.0).build();
+        Stock result = stockMarketController.getStock(StockName.TEA);
+        assertEquals(stock, result);
+    }
 
-        stockMarketController.recordTrades(Arrays.asList(trade1, trade2));
+    @Test
+    void testGetTradesForStock() {
+        List<Trade> trades = List.of(
+                new Trade(StockName.TEA, new Date(), 100, 105.0),
+                new Trade(StockName.TEA, new Date(), 150, 106.0)
+        );
+        when(tradeService.getTradesByStockName(StockName.TEA)).thenReturn(trades);
 
-        List<Trade> trades = stockMarketController.getTradesForStock(StockName.TEA);
-        assertEquals(2, trades.size());
-        assertTrue(trades.contains(trade1));
-        assertTrue(trades.contains(trade2));
+        List<Trade> result = stockMarketController.getTradesForStock(StockName.TEA);
+        assertEquals(trades, result);
     }
 
     @Test
     void testCalculateDividendYield() {
-        Stock stock = Stock.builder().stockName(StockName.TEA).stockType(StockType.COMMON).lastDividend(8).fixedDividend(0).parValue(100).build();
-        stockMarketController.addStock(Arrays.asList(stock));
+        Stock stock = new Stock(StockName.TEA, StockType.COMMON, 0, 0, 100);
+        when(calculationService.calculateDividendYield(stock, 105.0)).thenReturn(0.0);
 
-        double dividendYield = stockMarketController.calculateDividendYield(stock, 100.0);
-        assertEquals(0.08, dividendYield);
+        double result = stockMarketController.calculateDividendYield(stock, 105.0);
+        assertEquals(0.0, result);
     }
 
     @Test
     void testCalculatePERatio() {
-        Stock stock = Stock.builder().stockName(StockName.TEA).stockType(StockType.COMMON).lastDividend(8).fixedDividend(0).parValue(100).build();
-        stockMarketController.addStock(Arrays.asList(stock));
+        Stock stock = new Stock(StockName.TEA, StockType.COMMON, 0, 0, 100);
+        when(calculationService.calculatePERatio(stock, 105.0)).thenReturn(15.0);
 
-        double peRatio = stockMarketController.calculatePERatio(stock, 100.0);
-        assertEquals(12.5, peRatio);
+        double result = stockMarketController.calculatePERatio(stock, 105.0);
+        assertEquals(15.0, result);
     }
 
     @Test
     void testCalculateVolumeWeightedStockPrice() {
-        Stock stock = Stock.builder().stockName(StockName.TEA).stockType(StockType.COMMON).lastDividend(8).fixedDividend(0).parValue(100).build();
-        stockMarketController.addStock(Arrays.asList(stock));
+        List<Trade> trades = List.of(
+                new Trade(StockName.TEA, new Date(), 100, 105.0),
+                new Trade(StockName.TEA, new Date(), 150, 106.0)
+        );
+        when(tradeService.getTradesByStockName(StockName.TEA)).thenReturn(trades);
+        when(calculationService.calculateVolumeWeightedStockPrice(trades)).thenReturn(105.5);
 
-        Trade trade1 = Trade.builder().stockName(StockName.TEA).timestamp(new Date()).quantity(100).tradeType(TradeType.BUY).price(105.0).build();
-        Trade trade2 = Trade.builder().stockName(StockName.TEA).timestamp(new Date()).quantity(200).tradeType(TradeType.SELL).price(106.0).build();
-
-        stockMarketController.recordTrades(Arrays.asList(trade1, trade2));
-
-        double vwsp = stockMarketController.calculateVolumeWeightedStockPrice(StockName.TEA);
-        assertEquals((105.0 * 100 + 106.0 * 200) / 300, vwsp);
+        double result = stockMarketController.calculateVolumeWeightedStockPrice(StockName.TEA);
+        assertEquals(105.5, result);
     }
 
     @Test
     void testCalculateGBCEAllShareIndex() {
-        // Set up stocks
-        Stock stock1 = Stock.builder().stockName(StockName.TEA).stockType(StockType.COMMON).lastDividend(0).fixedDividend(0).parValue(100).build();
-        Stock stock2 = Stock.builder().stockName(StockName.POP).stockType(StockType.COMMON).lastDividend(8).fixedDividend(0).parValue(100).build();
+        List<Stock> stocks = List.of(
+                new Stock(StockName.TEA, StockType.COMMON, 0, 0, 100),
+                new Stock(StockName.POP, StockType.COMMON, 8, 0, 100)
+        );
+        when(stockService.getAllStocks()).thenReturn(stocks);
+        when(calculationService.calculateGBCEAllShareIndex(stocks)).thenReturn(103.4);
 
-        stockMarketController.addStock(Arrays.asList(stock1, stock2));
-
-        // Record trades
-        Date now = new Date();
-        Trade trade1 = Trade.builder().stockName(StockName.TEA).timestamp(now).quantity(100).tradeType(TradeType.BUY).price(105.0).build();
-        Trade trade2 = Trade.builder().stockName(StockName.POP).timestamp(now).quantity(200).tradeType(TradeType.SELL).price(106.0).build();
-
-        stockMarketController.recordTrades(Arrays.asList(trade1, trade2));
-
-        // Calculate the VWSPs
-        double vwsp1 = stockMarketController.calculateVolumeWeightedStockPrice(StockName.TEA);
-        double vwsp2 = stockMarketController.calculateVolumeWeightedStockPrice(StockName.POP);
-
-        // Calculate the GBCE All Share Index
-        double gbceAllShareIndex = stockMarketController.calculateGBCEAllShareIndex(Arrays.asList(stock1, stock2));
-
-        // Calculate the expected GBCE All Share Index (geometric mean)
-        double expectedIndex = Math.pow(vwsp1 * vwsp2, 1.0 / 2);
-
-        // Assert the result
-        assertEquals(expectedIndex, gbceAllShareIndex, 0.0001); // Allowing a small delta for floating-point comparison
+        double result = stockMarketController.calculateGBCEAllShareIndex();
+        assertEquals(103.4, result);
     }
 }

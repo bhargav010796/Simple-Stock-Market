@@ -6,15 +6,18 @@ import com.stock.models.Stock;
 import com.stock.models.Trade;
 import com.stock.service.ICalculationService;
 import com.stock.service.ITradeService;
+import com.stock.serviceImpl.TradeServiceImpl;
 
 import java.util.Date;
 import java.util.List;
 
 public class CalculationServiceImpl implements ICalculationService {
+    private static final long FIVE_MINUTES_IN_MILLIS = 5 * 60 * 1000;
+
     private final ITradeService tradeService;
 
-    public CalculationServiceImpl(ITradeService tradeService) {
-        this.tradeService = tradeService;
+    public CalculationServiceImpl() {
+        this.tradeService = new TradeServiceImpl();
     }
 
     @Override
@@ -34,15 +37,13 @@ public class CalculationServiceImpl implements ICalculationService {
     }
 
     @Override
-    public double calculateVolumeWeightedStockPrice(StockName stockName, List<Trade> trades) {
+    public double calculateVolumeWeightedStockPrice(List<Trade> trades) {
         Date currentTime = new Date();
-        long fiveMinutesInMillis = 5 * 60 * 1000;
         double totalPriceQuantity = 0;
         int totalQuantity = 0;
 
         for (Trade trade : trades) {
-            if (trade.getStockName() == stockName &&
-                    trade.getTimestamp().getTime() >= (currentTime.getTime() - fiveMinutesInMillis)) {
+            if (trade.getTimestamp().getTime() >= (currentTime.getTime() - FIVE_MINUTES_IN_MILLIS)) {
 
                 totalPriceQuantity += trade.getPrice() * trade.getQuantity();
                 totalQuantity += trade.getQuantity();
@@ -58,7 +59,9 @@ public class CalculationServiceImpl implements ICalculationService {
         int count = 0;
 
         for (Stock stock : stocks) {
-            double vwsp = calculateVolumeWeightedStockPrice(stock.getStockName(), tradeService.getTradesForStock(stock.getStockName())); // Assuming trades is available here
+            List<Trade> trades = tradeService.getTradesByStockName(stock.getStockName());
+            double vwsp = calculateVolumeWeightedStockPrice(trades);
+
             if (vwsp > 0) {
                 product *= vwsp;
                 count++;
@@ -67,4 +70,5 @@ public class CalculationServiceImpl implements ICalculationService {
 
         return count == 0 ? 0 : Math.pow(product, 1.0 / count);
     }
+
 }

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ITradeService {
     void recordTrade(Trade trade);
-    List<Trade> getTradesForStock(StockName stockName);
+    List<Trade> getTradesByStockName(StockName stockName);
+    List<Trade> getAllTrades();
 }

@@ -7,41 +7,37 @@ import com.stock.service.ICalculationService;
 import com.stock.service.ITradeService;
 import com.stock.serviceImpl.CalculationServiceImpl;
 import com.stock.serviceImpl.TradeServiceImpl;
+import com.stock.service.IStockService;
+import com.stock.serviceImpl.StockServiceImpl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StockMarketController {
-    private final Map<StockName, Stock> stockMarket;
-    private final ICalculationService calculationService;
+
+    private final IStockService stockService;
     private final ITradeService tradeService;
+    private final ICalculationService calculationService;
 
     public StockMarketController() {
-        this.stockMarket = new HashMap<>();
+        this.stockService = new StockServiceImpl();
         this.tradeService = new TradeServiceImpl();
-        this.calculationService = new CalculationServiceImpl(tradeService);
+        this.calculationService = new CalculationServiceImpl();
     }
 
-    public void addStock(List<Stock> stocks) {
-        for (Stock stock : stocks) {
-            stockMarket.put(stock.getStockName(), stock);
-        }
+    public void addStock(Stock stock) {
+        stockService.saveStock(stock);
     }
 
-    public void recordTrades(List<Trade> trades) {
-        for (Trade trade : trades) {
-            tradeService.recordTrade(trade);
-        }
+    public void recordTrade(Trade trade) {
+        tradeService.recordTrade(trade);
     }
-
 
     public Stock getStock(StockName stockName) {
-        return stockMarket.get(stockName);
+        return stockService.getStockByName(stockName);
     }
 
     public List<Trade> getTradesForStock(StockName stockName) {
-        return tradeService.getTradesForStock(stockName);
+        return tradeService.getTradesByStockName(stockName);
     }
 
     public double calculateDividendYield(Stock stock, double price) {
@@ -53,11 +49,11 @@ public class StockMarketController {
     }
 
     public double calculateVolumeWeightedStockPrice(StockName stockName) {
-        return calculationService.calculateVolumeWeightedStockPrice(stockName, tradeService.getTradesForStock(stockName));
+        return calculationService.calculateVolumeWeightedStockPrice(tradeService.getTradesByStockName(stockName));
     }
 
-    public double calculateGBCEAllShareIndex(List<Stock> stocks) {
-        return calculationService.calculateGBCEAllShareIndex(stocks);
+    public double calculateGBCEAllShareIndex() {
+        return calculationService.calculateGBCEAllShareIndex(stockService.getAllStocks());
     }
 
 }

@@ -3,10 +3,6 @@ package com.stock;
 import com.stock.controller.StockMarketController;
 import com.stock.enums.StockName;
 import com.stock.models.Stock;
-import com.stock.util.StockFactory;
-import com.stock.util.TradeFactory;
-
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -14,13 +10,9 @@ public class Main {
     public static void main(String[] args) {
         StockMarketController stockMarketController = new StockMarketController();
 
-        //Add Stocks and its trades
-        List<Stock> allStocks = StockFactory.createAllStocks();
-        stockMarketController.addStock(allStocks);
-
         System.out.println("Available stocks:");
-        for (Stock stock : allStocks) {
-            System.out.println("- " + stock.getStockName());
+        for (StockName stockName : StockName.values()) {
+            System.out.println("- " + stockName);
         }
 
         // Ask for user input
@@ -46,9 +38,6 @@ public class Main {
             return;
         }
 
-        //Record all trades
-        stockMarketController.recordTrades(TradeFactory.createTrades());
-
         // Perform calculations and display results for the given stock
         Stock selectedStock = stockMarketController.getStock(stockName);
         if (selectedStock != null) {
@@ -66,7 +55,7 @@ public class Main {
 
         // Overall GBCE All Share Index Calculation
         System.out.println("Overall GBCE All Share Index:");
-        double gbceAllShareIndex = stockMarketController.calculateGBCEAllShareIndex(allStocks);
+        double gbceAllShareIndex = stockMarketController.calculateGBCEAllShareIndex();
         System.out.println("GBCE All Share Index: " + gbceAllShareIndex);
         System.out.println("---------------------------------");
 

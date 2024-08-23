@@ -3,24 +3,32 @@ package com.stock.serviceImpl;
 import com.stock.enums.StockName;
 import com.stock.models.Trade;
 import com.stock.service.ITradeService;
+import com.stock.repository.TradeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TradeServiceImpl implements ITradeService {
-    private final List<Trade> trades = new ArrayList<>();
+    private final TradeRepository tradeRepository;
 
-    @Override
-    public void recordTrade(Trade trade) {
-        trades.add(trade);
+    public TradeServiceImpl() {
+        this.tradeRepository = new TradeRepository();
     }
 
     @Override
-    public List<Trade> getTradesForStock(StockName stockName) {
-        return trades.stream()
-                .filter(trade -> trade.getStockName() == stockName)
-                .collect(Collectors.toList());
+    public void recordTrade(Trade trade) {
+        tradeRepository.saveTrade(trade);
+    }
+
+    @Override
+    public List<Trade> getTradesByStockName(StockName stockName) {
+        return tradeRepository.findTradesByStockName(stockName);
+    }
+
+    @Override
+    public List<Trade> getAllTrades() {
+        return tradeRepository.findAllTrades();
     }
 
 }

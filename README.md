@@ -96,9 +96,13 @@ mvn exec:java
 
 When you run this command, the application will start and prompt you to enter a stock name and its current price. You will be presented with a list of available stocks to choose from.
 After entering the stock name and price, the application will display the following calculations for the selected stock:
-	•	Dividend Yield
-	•	P/E Ratio
-	•	Volume Weighted Stock Price (VWSP)
+	
+•	Dividend Yield
+	
+•	P/E Ratio
+	
+•	Volume Weighted Stock Price (VWSP)
+
 Additionally, the application will calculate and display the GBCE All Share Index based on all stocks.
 
 Example Interaction:

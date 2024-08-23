@@ -41,7 +41,9 @@ public class Main {
         // Perform calculations and display results for the given stock
         Stock selectedStock = stockMarketController.getStock(stockName);
         if (selectedStock != null) {
+            System.out.println();
             System.out.println(stockName + " Calculations:");
+            System.out.println("---------------------------------");
             double dividendYield = stockMarketController.calculateDividendYield(selectedStock, currentPrice);
             System.out.println("Dividend Yield: " + dividendYield);
             double peRatio = stockMarketController.calculatePERatio(selectedStock, currentPrice);

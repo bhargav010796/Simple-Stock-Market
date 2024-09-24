@@ -7,7 +7,17 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Usage: java Main <stock_name> <current_price>");
+            return;
+        }
+
+        // Take input from command-line arguments
+        String stockNameInput = args[0].toUpperCase();
+        double currentPrice;
+
+        // Initialize StockMarketController
         StockMarketController stockMarketController = new StockMarketController();
 
         System.out.println("Available stocks:");
@@ -17,26 +27,20 @@ public class Main {
 
         System.out.println("---------------------------------");
 
-        // Ask for user input
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter the stock name: ");
-        String stockNameInput = scanner.nextLine().toUpperCase();
-
+        // Validate stock name
         StockName stockName;
         try {
             stockName = StockName.valueOf(stockNameInput);
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid stock name. Please restart the program and enter a valid stock name.");
+            System.out.println("Invalid stock name. Please enter a valid stock name.");
             return;
         }
 
-        System.out.print("Enter the current price for " + stockName + ": ");
-        double currentPrice;
+        // Validate current price
         try {
-            currentPrice = Double.parseDouble(scanner.nextLine());
+            currentPrice = Double.parseDouble(args[1]);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid price format. Please restart the program and enter a valid number.");
+            System.out.println("Invalid price format. Please enter a valid number.");
             return;
         }
 
